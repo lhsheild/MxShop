@@ -10,12 +10,8 @@ if __name__ == '__main__':
 
     django.setup()
 
-    from goods import models
+    from users.models import UserProfile
 
-    value = 40
-
-    # goods = models.Goods.objects.filter(Q(category_id=value) | Q(category__parent_category_id=value) | Q(
-    #     category__parent_category__parent_category_id=value))
-    # print(len(goods))
-
-    send_register_email('lhsheild@sina.com', code=1234)
+    user = UserProfile.objects.get(username='lhsheild')
+    user.set_password('123456')
+    user.save()
