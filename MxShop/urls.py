@@ -24,6 +24,7 @@ import xadmin
 from goods.views import GoodsListViewSet, CategoryViewSet
 from useroperation.views import UserFavViewSet, LeavingMessageViewset, AddressViewset
 from users.views import RegSmsCodeViewSet, UserViewSet
+from trade.views import ShoppingCartViewSet
 from .settings import MEDIA_ROOT
 
 goods_list = GoodsListViewSet.as_view({
@@ -38,6 +39,7 @@ router.register('users', UserViewSet, basename='users')  # 用户注册的url
 router.register('userfavs', UserFavViewSet, basename='userfavs')  # 用户收藏url
 router.register('messages', LeavingMessageViewset, basename='messages')  # 用户留言url
 router.register('address', AddressViewset, basename='address')  # 用户收货地址url
+router.register('shopcarts', ShoppingCartViewSet, basename='shopcarts')  # 购物车url
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
