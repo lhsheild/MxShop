@@ -21,25 +21,26 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 import xadmin
-from goods.views import GoodsListViewSet, CategoryViewSet
-from useroperation.views import UserFavViewSet, LeavingMessageViewset, AddressViewset
-from users.views import RegSmsCodeViewSet, UserViewSet
-from trade.views import ShoppingCartViewSet
+from goods.views import GoodsListViewset, CategoryViewset
+from useroperation.views import UserFavViewset, LeavingMessageViewset, AddressViewset
+from users.views import RegSmsCodeViewset, UserViewset
+from trade.views import ShoppingCartViewset, OrderViewset
 from .settings import MEDIA_ROOT
 
-goods_list = GoodsListViewSet.as_view({
+goods_list = GoodsListViewset.as_view({
     'get': 'list',
 })
 
 router = DefaultRouter()
-router.register('goods', GoodsListViewSet, basename='goods')  # 配置goods的url
-router.register('categories', CategoryViewSet, base_name="categories")  # 配置category的url
-router.register('code', RegSmsCodeViewSet, basename='code')  # 配置验证码的url
-router.register('users', UserViewSet, basename='users')  # 用户注册的url
-router.register('userfavs', UserFavViewSet, basename='userfavs')  # 用户收藏url
+router.register('goods', GoodsListViewset, basename='goods')  # 配置goods的url
+router.register('categories', CategoryViewset, base_name="categories")  # 配置category的url
+router.register('code', RegSmsCodeViewset, basename='code')  # 配置验证码的url
+router.register('users', UserViewset, basename='users')  # 用户注册的url
+router.register('userfavs', UserFavViewset, basename='userfavs')  # 用户收藏url
 router.register('messages', LeavingMessageViewset, basename='messages')  # 用户留言url
 router.register('address', AddressViewset, basename='address')  # 用户收货地址url
-router.register('shopcarts', ShoppingCartViewSet, basename='shopcarts')  # 购物车url
+router.register('shopcarts', ShoppingCartViewset, basename='shopcarts')  # 购物车url
+router.register('orders', OrderViewset, basename='orders')  # 订单url
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),

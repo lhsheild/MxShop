@@ -10,8 +10,6 @@ if __name__ == '__main__':
 
     django.setup()
 
-    from users.models import UserProfile
-
-    user = UserProfile.objects.get(username='lhsheild')
-    user.set_password('123456')
-    user.save()
+    import time
+    time_str = time.strftime("%Y%m%d%H%M%S",time.localtime(time.time()))
+    print(time_str)

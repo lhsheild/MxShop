@@ -35,7 +35,7 @@ class CustomBackend(ModelBackend):
             return None
 
 
-class RegSmsCodeViewSet(CreateModelMixin, GenericViewSet):
+class RegSmsCodeViewset(CreateModelMixin, GenericViewSet):
     serializer_class = RegSmsSerializer
 
     def generate_code(self):
@@ -77,7 +77,7 @@ class RegSmsCodeViewSet(CreateModelMixin, GenericViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class UserViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+class UserViewset(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     """
     用户
     """

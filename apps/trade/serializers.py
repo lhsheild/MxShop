@@ -1,7 +1,18 @@
+import time
+
 from rest_framework import serializers
 
 from goods.models import Goods
-from trade.models import ShoppingCart
+from goods.serializers import GoodsSerializer
+from trade.models import ShoppingCart, OrderInfo, OrderGoods
+
+
+class ShopCartDetailSerializer(serializers.ModelSerializer):
+    goods = GoodsSerializer(many=False, required=True)
+
+    class Meta:
+        model = ShoppingCart
+        fields = '__all__'
 
 
 class ShopCartSerializer(serializers.Serializer):
@@ -25,3 +36,49 @@ class ShopCartSerializer(serializers.Serializer):
         else:
             existed = ShoppingCart.objects.create(**validated_data)
         return existed
+
+    def update(self, instance, validated_data):
+        instance.nums = validated_data['nums']
+        instance.save()
+        return instance
+
+
+class OrderGoodsSerialzier(serializers.ModelSerializer):
+    goods = GoodsSerializer(many=False)
+
+    class Meta:
+        model = OrderGoods
+        fields = "__all__"
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    goods = OrderGoodsSerialzier(many=True)
+
+    class Meta:
+        model = OrderInfo
+        fields = "__all__"
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    pay_status = serializers.CharField(read_only=True)
+    trade_no = serializers.CharField(read_only=True)
+    order_sn = serializers.CharField(read_only=True)
+    pay_time = serializers.DateTimeField(read_only=True)
+    nonce_str = serializers.CharField(read_only=True)
+    pay_type = serializers.CharField(read_only=True)
+
+    def generate_order_sn(self):
+        from random import Random
+        order_sn = '{}{}{}'.format(time.strftime("%Y%m%d%H%M%S", time.localtime(time.time())),
+                                   self.context['request'].user.id,
+                                   Random().randint(10, 99))
+        return order_sn
+
+    class Meta:
+        model = OrderInfo
+        fields = '__all__'
+
+    def validate(self, attrs):
+        attrs['order_sn'] = self.generate_order_sn()
+        return attrs

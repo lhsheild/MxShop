@@ -10,7 +10,7 @@ from .serializers import UserFavSerializer, UserFavDetailSerializer, UserLeaving
 
 
 # Create your views here.
-class UserFavViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class UserFavViewset(CreateModelMixin, DestroyModelMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet):
     """
     list:获取用户收藏李彪
     retrieve:判断某个商品是否已经收藏
