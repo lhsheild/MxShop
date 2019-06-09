@@ -68,3 +68,22 @@ class OrderViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Dest
 
             shop_cart.delete()
         return order
+
+
+from rest_framework.views import APIView
+class AlipayView(APIView):
+    def get(self, request):
+        """
+        处理return_url返回
+        :param request:
+        :return:
+        """
+        pass
+
+    def post(self, request):
+        """
+        处理notify_url返回
+        :param request:
+        :return:
+        """
+        pass

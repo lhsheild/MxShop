@@ -24,7 +24,7 @@ import xadmin
 from goods.views import GoodsListViewset, CategoryViewset
 from useroperation.views import UserFavViewset, LeavingMessageViewset, AddressViewset
 from users.views import RegSmsCodeViewset, UserViewset
-from trade.views import ShoppingCartViewset, OrderViewset
+from trade.views import ShoppingCartViewset, OrderViewset, AlipayView
 from .settings import MEDIA_ROOT
 
 goods_list = GoodsListViewset.as_view({
@@ -48,6 +48,8 @@ urlpatterns = [
     path('login/', obtain_jwt_token),
     path('api-auth/', include(('rest_framework.urls', 'rest_framework'), namespace='rest_frameword')),
     path('docs/', include_docs_urls(title='MxShop|DOCS')),
+
+    path('alipay/return/', AlipayView.as_view(), name='alipay'),
 
     path('', include(router.urls)),
 
