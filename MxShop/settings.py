@@ -96,22 +96,22 @@ WSGI_APPLICATION = 'MxShop.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'MxShop',  # 数据库名字(需要先创建)
-        'USER': 'postgres',  # 登录用户名
-        'PASSWORD': 'lh18178007095',  # 密码
-        'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
-        'PORT': '11011',  # 端口
-    }
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
     #     'USER': 'postgres',  # 登录用户名
     #     'PASSWORD': 'lh18178007095',  # 密码
-    #     'HOST': 'localhost',  # 数据库IP地址,留空默认为localhost
-    #     'PORT': '5432',  # 端口
+    #     'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
+    #     'PORT': '11011',  # 端口
     # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'MxShop',  # 数据库名字(需要先创建)
+        'USER': 'postgres',  # 登录用户名
+        'PASSWORD': 'lh18178007095',  # 密码
+        'HOST': '127.0.0.1',  # 数据库IP地址,留空默认为localhost
+        'PORT': '5432',  # 端口
+    }
 }
 
 # Password validation
@@ -192,3 +192,9 @@ EMAIL_FROM = "lhsheild@sina.com"
 REGEX_MOBILE = '^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$'
 # 云片网设置
 APIKEY = 'test'
+
+
+# 支付宝相关
+private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_2048.txt')
+pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/pub_2048.txt')
+ali_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048.txt')

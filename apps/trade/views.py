@@ -71,6 +71,11 @@ class OrderViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Dest
 
 
 from rest_framework.views import APIView
+from utils.alipay import AliPay
+from MxShop.settings import private_key_path, ali_key_path
+from datetime import datetime
+
+
 class AlipayView(APIView):
     def get(self, request):
         """
@@ -78,7 +83,42 @@ class AlipayView(APIView):
         :param request:
         :return:
         """
-        pass
+        processed_dict = {}
+        for k, v in request.GET.items():
+            processed_dict[k] = v
+
+        sign = processed_dict.pop('sign', None)
+
+        alipay = AliPay(
+            appid='2016092800616929',
+            app_notify_url='http://113.16.255.12:11032/alipay/return',
+            app_private_key_path=private_key_path,
+            alipay_public_key_path=ali_key_path,
+            debug=True,
+            return_url='http://113.16.255.12:11032/alipay/return'
+        )
+
+        verify_re = alipay.verify(processed_dict, sign)
+        print('get_dict', processed_dict)
+
+        if verify_re is True:
+            order_sn = processed_dict.get('out_trade_no', None)
+            trade_no = processed_dict.get('trade_no', None)
+
+            existed_orders = OrderInfo.objects.filter(order_sn=order_sn)
+            for existed_order in existed_orders:
+                existed_order.trade_no = trade_no
+                existed_order.pay_time = datetime.now()
+                existed_order.save()
+
+            from django.shortcuts import redirect
+            response = redirect('index')
+            response.set_cookie('nextPath', 'pay', max_age=2)
+            return response
+        else:
+            from django.shortcuts import redirect
+            response = redirect('index')
+            return response
 
     def post(self, request):
         """
@@ -86,4 +126,37 @@ class AlipayView(APIView):
         :param request:
         :return:
         """
-        pass
+        processed_dict = {}
+        for k, v in request.POST.items():
+            processed_dict[k] = v
+
+        sign = processed_dict.pop('sign', None)
+
+        alipay = AliPay(
+            appid='2016092800616929',
+            app_notify_url='http://113.16.255.12:11032/alipay/return',
+            app_private_key_path=private_key_path,
+            alipay_public_key_path=ali_key_path,
+            debug=True,
+            return_url='http://113.16.255.12:11032/alipay/return'
+        )
+
+        verify_re = alipay.verify(processed_dict, sign)
+        print(processed_dict)
+
+        if verify_re is True:
+            order_sn = processed_dict.get('out_trade_no', None)
+            trade_no = processed_dict.get('trade_no', None)
+            trade_status = processed_dict.get('trade_status', None)
+            print(trade_status)
+
+            existed_orders = OrderInfo.objects.filter(order_sn=order_sn)
+            for existed_order in existed_orders:
+                existed_order.pay_status = trade_status
+                existed_order.trade_no = trade_no
+                existed_order.pay_time = datetime.now()
+                existed_order.save()
+
+                from rest_framework.response import Response
+            return Response('success')
+

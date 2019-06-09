@@ -5,6 +5,7 @@ from rest_framework import serializers
 from goods.models import Goods
 from goods.serializers import GoodsSerializer
 from trade.models import ShoppingCart, OrderInfo, OrderGoods
+from utils.alipay import AliPay
 
 
 class ShopCartDetailSerializer(serializers.ModelSerializer):
@@ -53,6 +54,37 @@ class OrderGoodsSerialzier(serializers.ModelSerializer):
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     goods = OrderGoodsSerialzier(many=True)
+    alipay_url = serializers.SerializerMethodField(read_only=True)
+
+    def get_alipay_url(self, obj):
+        from MxShop.settings import private_key_path, ali_key_path
+        alipay = AliPay(
+            # 沙箱里面的appid值
+            appid="2016092800616929",
+            # notify_url是异步的url
+            app_notify_url="http://113.16.255.12:11032/alipay/return/",
+            # 我们自己商户的密钥
+            app_private_key_path=private_key_path,
+            # 支付宝的公钥
+            alipay_public_key_path=ali_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+            # debug为true时使用沙箱的url。如果不是用正式环境的url
+            debug=True,  # 默认False,
+            return_url="http://113.16.255.12:11032/alipay/return/"
+        )
+
+        # 直接支付:生成请求的字符串。
+        url = alipay.direct_pay(
+            # 订单标题
+            subject=obj.order_sn,
+            # 我们商户自行生成的订单号
+            out_trade_no=obj.order_sn,
+            # 订单金额
+            total_amount=obj.order_mount,
+        )
+        # 将生成的请求字符串拿到我们的url中进行拼接
+        re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
+
+        return re_url
 
     class Meta:
         model = OrderInfo
@@ -67,6 +99,37 @@ class OrderSerializer(serializers.ModelSerializer):
     pay_time = serializers.DateTimeField(read_only=True)
     nonce_str = serializers.CharField(read_only=True)
     pay_type = serializers.CharField(read_only=True)
+    alipay_url = serializers.SerializerMethodField(read_only=True)
+
+    def get_alipay_url(self, obj):
+        from MxShop.settings import private_key_path, ali_key_path
+        alipay = AliPay(
+            # 沙箱里面的appid值
+            appid="2016092800616929",
+            # notify_url是异步的url
+            app_notify_url="http://113.16.255.12:11032/alipay/return/",
+            # 我们自己商户的密钥
+            app_private_key_path=private_key_path,
+            # 支付宝的公钥
+            alipay_public_key_path=ali_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+            # debug为true时使用沙箱的url。如果不是用正式环境的url
+            debug=True,  # 默认False,
+            return_url="http://113.16.255.12:11032/alipay/return/"
+        )
+
+        # 直接支付:生成请求的字符串。
+        url = alipay.direct_pay(
+            # 订单标题
+            subject=obj.order_sn,
+            # 我们商户自行生成的订单号
+            out_trade_no=obj.order_sn,
+            # 订单金额
+            total_amount=obj.order_mount,
+        )
+        # 将生成的请求字符串拿到我们的url中进行拼接
+        re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
+
+        return re_url
 
     def generate_order_sn(self):
         from random import Random
