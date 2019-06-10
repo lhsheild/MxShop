@@ -22,7 +22,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 import xadmin
-from goods.views import GoodsListViewset, CategoryViewset
+from goods.views import GoodsListViewset, CategoryViewset, BannerViewset, IndexCategoryViewset
 from useroperation.views import UserFavViewset, LeavingMessageViewset, AddressViewset
 from users.views import RegSmsCodeViewset, UserViewset
 from trade.views import ShoppingCartViewset, OrderViewset, AlipayView
@@ -42,6 +42,8 @@ router.register('messages', LeavingMessageViewset, basename='messages')  # 用�
 router.register('address', AddressViewset, basename='address')  # 用户收货地址url
 router.register('shopcarts', ShoppingCartViewset, basename='shopcarts')  # 购物车url
 router.register('orders', OrderViewset, basename='orders')  # 订单url
+router.register('banners', BannerViewset, basename='banners')  # 轮播图url
+router.register('indexgoods', IndexCategoryViewset, basename='indexgoods')  # 首页商品系列url
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),

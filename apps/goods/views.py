@@ -4,10 +4,11 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 from .filters import GoodsFilter, CategoriesFilter
-from .models import Goods, GoodsCategory
-from .serializers import GoodsSerializer, CategorySerializer1
+from .models import Goods, GoodsCategory, Banner
+from .serializers import GoodsSerializer, CategorySerializer1, BannerSerializer, IndexCategorySerializer
 
 
 class GoodsPagination(PageNumberPagination):
@@ -18,7 +19,7 @@ class GoodsPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class GoodsListViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class GoodsListViewset(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
     商品列表页， 分页/搜索/过滤/排序
     """
@@ -32,6 +33,14 @@ class GoodsListViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewset
     search_fields = ('name', 'goods_brief', 'goods_desc')
     ordering_fields = ('sold_num', 'shop_price')
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_num += 1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        from rest_framework.response import Response
+        return Response(serializer.data)
+
 
 # 商品分类接口
 class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -43,3 +52,19 @@ class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
     serializer_class = CategorySerializer1
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = CategoriesFilter
+
+
+class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    获取轮播图
+    """
+    serializer_class = BannerSerializer
+    queryset = Banner.objects.all().order_by('index')
+
+
+class IndexCategoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    首页商品分类数据
+    """
+    serializer_class = IndexCategorySerializer
+    queryset = GoodsCategory.objects.filter(is_tab=True, name__in=['生鲜食品', '精品肉类', '酒水饮料'])

@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import datetime
 import os
 import sys
-import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_filters',
     'reversion',
-    'corsheaders',
+    'coreschema',
     'rest_framework.authtoken',
 
     'users.apps.UsersConfig',
@@ -96,22 +96,30 @@ WSGI_APPLICATION = 'MxShop.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
-    #     'USER': 'postgres',  # 登录用户名
-    #     'PASSWORD': 'lh18178007095',  # 密码
-    #     'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
-    #     'PORT': '11011',  # 端口
-    # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'MxShop',  # 数据库名字(需要先创建)
         'USER': 'postgres',  # 登录用户名
         'PASSWORD': 'lh18178007095',  # 密码
-        'HOST': '127.0.0.1',  # 数据库IP地址,留空默认为localhost
-        'PORT': '5432',  # 端口
+        'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
+        'PORT': '11011',  # 端口
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
+    #     'USER': 'postgres',  # 登录用户名
+    #     'PASSWORD': 'lh18178007095',  # 密码
+    #     'HOST': '127.0.0.1',  # 数据库IP地址,留空默认为localhost
+    #     'PORT': '5432',  # 端口
+    # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
+    #     'USER': 'postgres',  # 登录用户名
+    #     'PASSWORD': 'lh18178007095',  # 密码
+    #     'HOST': '192.168.1.119',  # 数据库IP地址,留空默认为localhost
+    #     'PORT': '5432',  # 端口
+    # }
 }
 
 # Password validation
@@ -161,6 +169,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# DRF配置
 REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': (
     #     'rest_framework.permissions.IsAuthenticated',
@@ -176,9 +185,24 @@ REST_FRAMEWORK = {
     ),
 }
 
+# DRF缓存
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 1
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://123456@113.16.255.12:11026",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),    #也可以设置seconds=20
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',                       #JWT跟前端保持一致，比如“token”这里设置成JWT
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),  # 也可以设置seconds=20
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',  # JWT跟前端保持一致，比如“token”这里设置成JWT
 }
 
 EMAIL_HOST = "smtp.sina.com"
@@ -192,7 +216,6 @@ EMAIL_FROM = "lhsheild@sina.com"
 REGEX_MOBILE = '^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$'
 # 云片网设置
 APIKEY = 'test'
-
 
 # 支付宝相关
 private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_2048.txt')

@@ -12,7 +12,7 @@ from .serializers import UserFavSerializer, UserFavDetailSerializer, UserLeaving
 # Create your views here.
 class UserFavViewset(CreateModelMixin, DestroyModelMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet):
     """
-    list:获取用户收藏李彪
+    list:获取用户收藏列表
     retrieve:判断某个商品是否已经收藏
     create:收藏商品
     """
@@ -21,6 +21,18 @@ class UserFavViewset(CreateModelMixin, DestroyModelMixin, ListModelMixin, Retrie
     # serializer_class = UserFavSerializer
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     lookup_field = 'goods_id'
+
+    def perform_create(self, serializer):  # 商品收藏数修改，也可以用信号量实现
+        instance = serializer.save()
+        goods = instance.goods
+        goods.fav_num += 1
+        goods.save()
+
+    def perform_destroy(self, instance):  # 商品收藏数删减，也可以用信号量实现
+        goods = instance.goods
+        goods.fav_num -= 1
+        goods.save()
+        instance.delete()
 
     def get_queryset(self):
         return UserFav.objects.filter(user=self.request.user)

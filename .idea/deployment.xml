@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="nnkcy_11010" compareModeInSync="TEXT" showNewOnSourceInSync="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Copy of project-level server 'nnkcy11022_mxshop'" compareModeInSync="TEXT" showNewOnSourceInSync="false">
     <serverData>
-      <paths name="nnkcy_11010">
+      <paths name="nnkcy11022_mxshop">
         <serverdata>
           <mappings>
-            <mapping deploy="/MxShop" local="$PROJECT_DIR$" />
+            <mapping deploy="/MxShop" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
