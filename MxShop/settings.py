@@ -96,14 +96,14 @@ WSGI_APPLICATION = 'MxShop.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'MxShop',  # 数据库名字(需要先创建)
-        'USER': 'postgres',  # 登录用户名
-        'PASSWORD': 'lh18178007095',  # 密码
-        'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
-        'PORT': '11011',  # 端口
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
+    #     'USER': 'postgres',  # 登录用户名
+    #     'PASSWORD': 'lh18178007095',  # 密码
+    #     'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
+    #     'PORT': '11011',  # 端口
+    # }
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
@@ -112,14 +112,15 @@ DATABASES = {
     #     'HOST': '127.0.0.1',  # 数据库IP地址,留空默认为localhost
     #     'PORT': '5432',  # 端口
     # }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
-    #     'USER': 'postgres',  # 登录用户名
-    #     'PASSWORD': 'lh18178007095',  # 密码
-    #     'HOST': '192.168.1.119',  # 数据库IP地址,留空默认为localhost
-    #     'PORT': '5432',  # 端口
-    # }
+    # 部署在122上
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'MxShop',  # 数据库名字(需要先创建)
+        'USER': 'postgres',  # 登录用户名
+        'PASSWORD': 'lh18178007095',  # 密码
+        'HOST': '192.168.1.119',  # 数据库IP地址,留空默认为localhost
+        'PORT': '5432',  # 端口
+    }
 }
 
 # Password validation
@@ -190,15 +191,24 @@ REST_FRAMEWORK_EXTENSIONS = {
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 1
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://123456@113.16.255.12:11026",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://123456@113.16.255.12:11026",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+#
+#     # 部署在122
+#     # "default": {
+#     #     "BACKEND": "django_redis.cache.RedisCache",
+#     #     "LOCATION": "redis://123456@192.168.1.122:6379",
+#     #     "OPTIONS": {
+#     #         "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#     #     }
+#     # }
+# }
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),  # 也可以设置seconds=20

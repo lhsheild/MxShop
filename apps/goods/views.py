@@ -23,7 +23,7 @@ class GoodsListViewset(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     """
     商品列表页， 分页/搜索/过滤/排序
     """
-    queryset = Goods.objects.all()
+    queryset = Goods.objects.all().order_by('-id')
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
     authentication_classes = (JSONWebTokenAuthentication,)
