@@ -3,8 +3,9 @@ from rest_framework import filters
 from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .filters import GoodsFilter, CategoriesFilter
 from .models import Goods, GoodsCategory, Banner
@@ -23,6 +24,8 @@ class GoodsListViewset(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     """
     商品列表页， 分页/搜索/过滤/排序
     """
+    throttle_classes = (UserRateThrottle, AnonRateThrottle)
+    queryset = Goods.objects.all()
     queryset = Goods.objects.all().order_by('-id')
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
