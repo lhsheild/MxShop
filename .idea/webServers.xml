@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="79853ffe-caed-4793-b350-19572f3d7f2a" name="nnkcy11022_mxshop" url="http://113.16.255.12">
+        <fileTransfer host="113.16.255.12" port="11022" rootFolder="/home/lh" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="11022" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
