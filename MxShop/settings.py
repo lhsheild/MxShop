@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 SECRET_KEY = 'gb&@(zjmpy(x-z$q9-r@icyc$9vt497ro!j6#dka$9ytlhr6l7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -77,7 +77,7 @@ ROOT_URLCONF = 'MxShop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'frontend')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -98,34 +98,28 @@ WSGI_APPLICATION = 'MxShop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'MxShop',  # 数据库名字(需要先创建)
-        'USER': 'postgres',  # 登录用户名
-        'PASSWORD': 'lh18178007095',  # 密码
-        'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
-        'PORT': '11011',  # 端口
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'MxShop',  # 数据库名字(需要先创建)
+            'USER': 'postgres',  # 登录用户名
+            'PASSWORD': 'lh18178007095',  # 密码
+            'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
+            'PORT': '11029',  # 端口
+        }
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
-    #     'USER': 'postgres',  # 登录用户名
-    #     'PASSWORD': 'lh18178007095',  # 密码
-    #     'HOST': '127.0.0.1',  # 数据库IP地址,留空默认为localhost
-    #     'PORT': '5432',  # 端口
-    # }
-    # 部署在122上
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'MxShop',  # 数据库名字(需要先创建)
-    #     'USER': 'postgres',  # 登录用户名
-    #     'PASSWORD': 'lh18178007095',  # 密码
-    #     'HOST': '192.168.1.119',  # 数据库IP地址,留空默认为localhost
-    #     'PORT': '5432',  # 端口
-    # }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'MxShop',  # 数据库名字(需要先创建)
+            'USER': 'postgres',  # 登录用户名
+            'PASSWORD': 'lh18178007095',  # 密码
+            'HOST': '192.168.1.122',  # 数据库IP地址,留空默认为localhost
+            'PORT': '11029',  # 端口
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -171,8 +165,9 @@ AUTHENTICATION_BACKENDS = (
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend/online-shop/static"),
 ]
 
 MEDIA_URL = '/media/'

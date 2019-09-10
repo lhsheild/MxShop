@@ -24,9 +24,9 @@ from rest_framework_jwt.views import obtain_jwt_token
 import xadmin
 from goods.views import GoodsListViewset, CategoryViewset, BannerViewset, IndexCategoryViewset
 from useroperation.views import UserFavViewset, LeavingMessageViewset, AddressViewset
-from users.views import RegSmsCodeViewset, UserViewset
+from users.views import RegSmsCodeViewset, UserViewset, index
 from trade.views import ShoppingCartViewset, OrderViewset, AlipayView
-from .settings import MEDIA_ROOT
+from .settings import MEDIA_ROOT, STATIC_URL, STATIC_ROOT
 
 goods_list = GoodsListViewset.as_view({
     'get': 'list',
@@ -53,10 +53,11 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='MxShop|DOCS')),
 
     path('alipay/return/', AlipayView.as_view(), name='alipay'),
-    path('index/', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('index/', index, name='index'),
 
     path('', include(router.urls)),
     path('', include('social_django.urls', namespace='social')),
 
     path('media/<path:path>', serve, {'document_root': MEDIA_ROOT}),
+    path('static/<path:path>', serve, {'document_root': STATIC_ROOT}),
 ]
