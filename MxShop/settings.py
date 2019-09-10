@@ -212,15 +212,7 @@ CACHES = {
     }
 }
 
-    # 部署在122
-    # "default": {
-    #     "BACKEND": "django_redis.cache.RedisCache",
-    #     "LOCATION": "redis://123456@192.168.1.122:6379",
-    #     "OPTIONS": {
-    #         "CLIENT_CLASS": "django_redis.client.DefaultClient",
-    #     }
-    # }
-}
+
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),  # 也可以设置seconds=20
