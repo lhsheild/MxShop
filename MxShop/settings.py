@@ -105,7 +105,7 @@ if not DEBUG:
             'NAME': 'MxShop',  # 数据库名字(需要先创建)
             'USER': 'postgres',  # 登录用户名
             'PASSWORD': 'lh18178007095',  # 密码
-            'HOST': '113.16.255.12',  # 数据库IP地址,留空默认为localhost
+            'HOST': '192.168.1.122',  # 数据库IP地址,留空默认为localhost
             'PORT': '11029',  # 端口
         }
     }
