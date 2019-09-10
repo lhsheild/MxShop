@@ -205,11 +205,12 @@ REST_FRAMEWORK_EXTENSIONS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://123456@113.16.255.12:11026",
+        "LOCATION": "redis://192.168.1.122:11026",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
+}
 
     # 部署在122
     # "default": {
